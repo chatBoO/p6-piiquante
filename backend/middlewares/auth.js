@@ -1,5 +1,5 @@
-//import du package de token chiffrer
 const jwt = require('jsonwebtoken');
+// const TOKEN = process.env.TOKEN;
 
 module.exports = (req, res, next) => {
     try {
@@ -13,4 +13,4 @@ module.exports = (req, res, next) => {
     } catch(error) {
         res.status(401).json({error});
     }
-}
+};

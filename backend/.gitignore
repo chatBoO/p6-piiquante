@@ -1,1 +1,6 @@
 node_modules
+.env
+images/*.png
+images/*.jpg
+images/*.jpeg
+images/*.webp
