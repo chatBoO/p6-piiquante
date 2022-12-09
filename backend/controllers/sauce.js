@@ -103,54 +103,6 @@ exports.modifySauce = (req, res, next) => {
 
 
 
-// exports.modifySauce = (req, res, next) => {
-//   if (req.file) {
-//   Sauce.findOne({_id: req.params.id})
-//     .then((sauce) => {
-//         const filename = sauce.imageUrl.split('/images/')[1];
-//       fs.unlink(`images/${filename}`, (error) => {
-//         if (error) {
-//           console.log(error);
-//         }
-//       })
-//     })
-//     .catch((error) => res.status(500).json({error}));
-//   }
-//   const sauceObject = req.file ? {
-//     ...JSON.parse(req.body.sauce), // Si la requête contient un champs "File", on récupère l'objet en parsant la chaine de caractères JSON
-//     imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`  // On récupère l'URL de l'image envoyée.
-//   } 
-
-//   : {...req.body };   // sinon on récupère l'objet directement
-
-//   delete sauceObject._userId;
-
-//   Sauce.findOne({_id: req.params.id})
-//     .then((sauce) => {
-//       if (sauce.userId != req.auth.userId) {
-//         res.status(403).json({message : 'unauthorized request !'});
-//       } else {
-//         Sauce.updateOne({ _id: req.params.id}, {...sauceObject, _id: req.params.id})
-//           .then(() => res.status(200).json({message: 'Sauce modifiée !'}))
-//           .catch((error) => res.status(401).json({error}));
-//       }
-//     })
-//     .catch((error) => res.status(400).json({ error}));
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

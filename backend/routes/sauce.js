@@ -1,7 +1,7 @@
 // import du package "express" (Framework)
 const express = require('express');
 
-// import module "router" d'express
+// import du module "router" d'express
 const router = express.Router();
 
 // import du middleware "auth" d'authentification à mettre sur les routes

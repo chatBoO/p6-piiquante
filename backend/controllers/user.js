@@ -9,10 +9,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 const TOKEN = process.env.TOKEN;
 
-// Import de notre modèle "user"
+// import de notre modèle "user"
 const User = require('../models/User');
 
-// Export de la fonction "signup"
+// export de la fonction "signup"
 exports.signup =(req, res, next) => {
     bcrypt.hash(req.body.password, 10) // Une fois le formulaire d'inscription rempli on crypte le mot de passe avec la méthode .hash de "bcrypt"
     .then(hash => {
@@ -27,7 +27,7 @@ exports.signup =(req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Export de la fonction "login"
+// export de la fonction "login"
 exports.login = (req, res, next) => {
     User.findOne({email: req.body.email}) // On cherche si le mail renseigné existe dans la base de données "user"
         .then(user => {
