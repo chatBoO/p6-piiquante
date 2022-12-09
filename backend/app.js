@@ -45,6 +45,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(morgan("dev"));
 
+// bases des routes auxquelles on ajoute les différentes routes "sauce" et "user" du dossier (routes)
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 
