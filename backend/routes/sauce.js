@@ -28,6 +28,9 @@ router.get('/:id',auth, sauceCtrl.getOneSauce);
 // récupérer toutes les sauces
 router.get('/',auth, sauceCtrl.getAllSauce);
 
+// route pour liker ou unliker une sauce 
+router.post('/:id/like', auth, sauceCtrl.likeNDislike)
+
 
 // exportation du module "router"
 module.exports = router;

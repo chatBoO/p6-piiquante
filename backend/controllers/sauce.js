@@ -93,88 +93,54 @@ exports.modifySauce = (req, res, next) => {
   .catch((error) => res.status(500).json({ error}));
 };
 
+// like/dislike sauce
+exports.likeNDislike = (req, res) => {
+  like = req.body.like;
+  id_sauce = req.params.id;
+  id_user = req.auth.userId;
+  switch (like) {
+      case -1:
+          // traitement
+          // mettre à jour le nombre de dislike de sauce  +1
+          // ajouter le user ID dans la liste des userDislike
+          Sauce.updateOne({ _id: id_sauce }, {$push: { usersDisliked: id_user }, $inc: { dislikes: +1 }})
+            .then(() => res.status(200).json({ message: "Je n'aime pas !" }))
+            .catch((error) => res.status(400).json({ error }));
 
+      break;
 
+      case 0:
+          //chercher la sauce
+          Sauce.findOne({ _id: id_sauce })
+          .then((sauce) => {
+              // verifier si l'utilisateur like 
+              // => eliminer le like
+              if (sauce.usersLiked.includes(id_user)) {
+                  Sauce.updateOne({ _id: id_sauce }, {$pull: { usersLiked: id_user }, $inc: { likes: -1 }})
+                    .then(() =>res.status(200).json({ message: "Sans avis !" }))
+                    .catch((error) => res.status(400).json({ error }));
+               }
+              // S'il dislike pas 
+              // => j'elimine le dislike
+              if (sauce.usersDisliked.includes(id_user)) {
+                  Sauce.updateOne({ _id: id_sauce }, {$pull: { usersDisliked: id_user }, $inc: { dislikes: -1 }})
+                    .then(() => res.status(200).json({ message: "Sans avis !" }))
+                    .catch((error) => res.status(400).json({ message: error.message }));
+              }
+          })
+              .catch((error) => res.status(400).json({ message: error.message }));
 
+      break;
 
+      case 1:
+          // traitement
+          // mettre à jour le nombre de like de sauce  +1
+          // ajouter le user ID dans la liste des userlike
+          Sauce.updateOne({ _id: id_sauce }, {$push: { usersLiked: id_user }, $inc: { likes: +1 }})
+            .then(() => res.status(200).json({ message: "J'aime !" }))
+            .catch((error) => res.status(400).json({ message: error.message }));
 
+      break;
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// exports.likeNDislike = (req,res,next) => {
-//   const like = req.body.like;
-//   const userId  = req.body.userId;
-//   const sauceId = req.params.id;
-  
-//   switch (like) {
-//     // like = case est égal à 1 on incremente le like de +1
-//     case 1:
-//      Sauce.updateOne(
-//       {
-//         _id: sauceId
-//       },
-//       {
-//         $push: {usersLiked: userId}, $inc: {likes: +1}
-//       }
-//      )
-//      .then(() => {
-//       res.status(200).json({ message: "like ajouté !" });
-//      })
-//      .catch((error) => res.status(400).json({error}));
-//      break;
-//     // permet de modifié un like 
-//      case 0 :
-//       Sauce.findOne({_id: sauceId})
-//       .then((sauce) =>{
-
-//         if (sauce.usersLiked.includes(userId)){
-//           Sauce.updateOne({_id: sauceId},
-//             {$pull: {usersLiked: userId}, $inc: {likes:-1}}
-//             )
-//             .then(() => res .status(200).json({message: "like modifié !"}))
-//             .catch((error) => res.status(400).json({error}));
-//         }
-//         if (sauce.usersDisliked.includes(userId)){
-//           Sauce.updateOne({_id: sauceId},
-//             {$pull: {usersDisliked: userId}, $inc: {likes: -1}})
-//             .then (() => res.status(200).json({message: "disliked modifié !"}))
-//             .catch((error) => res.status(400).json({error}));
-//         }
-//       })
-//       .catch((error) => res.status(404).json({error}));
-//       break;
-//       // permet de disliker une sauce 
-//     case -1:
-//       Sauce.updateOne({_id: sauceId},
-//       {$push: {usersDisliked : userId}, $inc: {dislikes: +1}})
-//       .then(() => res.status(200).json({message: "disliked ajouté!"}))
-//       .catch((error) => res.status(400).json({error}));
-//       break;
-
-//       default:console.log(error);
-//   }
-// }
+}
