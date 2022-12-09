@@ -34,7 +34,7 @@ const app = express();
 
 // app.use(cors());
 
-// Ajout du middleware global pour contourner les protections "CORS" lorsque les serveurs sont différents (ici Localhost:4200 et Localhost:3000)
+// ajout du middleware global pour contourner les protections "CORS" lorsque les serveurs sont différents (ici Localhost:4200 et Localhost:3000)
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -45,10 +45,11 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use("/images", express.static(path.join(__dirname, "images")));
-
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
+
+// ajout d'une route pour pouvoir accéder à l'image de la sauce, grâce au middleware "static" d'express
+app.use("/images", express.static(path.join(__dirname, "images"))); // on récupère le répertoire où s'execute le server + le dossier (image)
 
 module.exports = app;
 
