@@ -3,12 +3,9 @@ Pour initialiser le projet :
 Placez vous dans le dossier "backend" :
 
 - Effectuez la commande "npm install" dans le terminal pour installer les dépendances
-<<<<<<< HEAD
   
  (Si besoin effectuez la commande : "npm install express nodemon bcrypt cors dotenv fs jsonwebtoken mongoose mongoose-unique-validator multer  morgan path mongoose-error helmet express-rate-limit xss passwordValidator") pour installer tous les modules nécessaires manuellement
-=======
->>>>>>> 30bac1a34932a1bd5e8c37e19807ffd85865d47d
- 
+
 - Lancer la commande "node server" ou "nodemon server" pour lancer le serveur (localhost:3000)
 
 Placez vous dans le dossier "frontend" :
