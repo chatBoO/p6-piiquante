@@ -4,11 +4,13 @@ const express = require('express');
 // import du controller "user"
 const userCtrl = require('../controllers/user');
 
+const passwordValidator = require('../middlewares/password');
+
 // import du module "router" d'express
 const router = express.Router();
 
 // création d'un nouvel utilisateur
-router.post('/signup', userCtrl.signup);
+router.post('/signup', passwordValidator.password, userCtrl.signup);
 
 // connexion d'un utilisateur
 router.post('/login', userCtrl.login);

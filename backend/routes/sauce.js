@@ -25,12 +25,12 @@ router.delete('/:id', auth, multer,  sauceCtrl.deleteOneSauce);
 // récupérer UNE sauce
 router.get('/:id',auth, sauceCtrl.getOneSauce);
 
-// récupérer toutes les sauces
+// récupérer TOUTES les sauces
 router.get('/',auth, sauceCtrl.getAllSauce);
 
-// route pour liker ou unliker une sauce 
-router.post('/:id/like', auth, sauceCtrl.likeNDislike)
+// route pour liker ou disliker une sauce 
+router.post('/:id/like', auth, sauceCtrl.likeOrDislike)
 
 
-// exportation du module "router"
+// export du module "router"
 module.exports = router;

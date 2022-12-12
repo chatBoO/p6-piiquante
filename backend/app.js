@@ -4,35 +4,45 @@ const express = require ('express');
 // import du module "mongoose" pour la base de données
 const mongoose = require('mongoose');
 
-// import module "morgan" pour l'aide au developpement, il retourne les requêtes dans la console 
-const morgan = require('morgan');
-
 // import module "path" pour la gestion de chemins de stockage
 const path  = require('path');
 
 // import du module "dotenv" pour utiliser les variables d'environnement (ici cacher l'ID et le MDP de la base de données)
 const dotenv = require('dotenv');
 dotenv.config();
-const MONGODB_URI = process.env.MONGODB_URI; // //import de la variabe d'environnement de connection à la base da données
+const MONGODB_URI = process.env.MONGODB_URI; // //import de la variabe d'environnement pour la connexion à la base da données
 
-// import du module "cors" pour la gestion des headers 
-// const cors = require('cors');
+/* import du module "helmet" Helmet pour protéger de certaines des vulnérabilités bien connues du Web en configurant de manière appropriée des en-têtes HTTP.
+Helmet est une collection de neuf fonctions middleware qui définissent des en-têtes HTTP liés à la sécurité */
+const helmet = require('helmet');
+
+// import du module "xss" pour se protéger des attaques XSS, ce sont l’injection d’un script dans notre serveur
+const xss = require("xss");
+const html = xss('<script>alert("xss");</script>');
+console.log(html);
+
+/* import du module "express-rate-limit" pour limiter le nombre de requêtes possibles par un même utilisateur dans un temps donné.
+ Cela permet d'éviter de faire tomber le serveur avec des requêtes en boucle ou de hacker le site avec une méthode "Brute-Force" */
+const rateLimiter = require('express-rate-limit');
+
+const limiter = rateLimiter({ // configuration d'express-rate-limit
+  max: 100, // un maximum de 100 requêtes
+  windowMs:60 * 1000 * 10, // toutes les 10 minutes (60 * 1000ms  = 60 * 1s = 1mn * 10 = 10 mn )
+  message: "Trop de requêtes effectuées depuis cette adresse IP" // affichera ce message une fois que le nombre de requêtes autorisées sera dépassée
+});
 
 // importation de nos routes "user" et "sauce"
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
-//connexion à la base de données grâce à la variable d'environnement comprenant ID & MDP 
+// connexion à la base de données grâce à la variable d'environnement comprenant ID & MDP 
 mongoose.connect(MONGODB_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-
 const app = express(); 
-
-// app.use(cors());
 
 // ajout du middleware global pour contourner les protections "CORS" lorsque les serveurs sont différents (ici Localhost:4200 et Localhost:3000)
 app.use((req, res, next) => {
@@ -41,9 +51,16 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
-// 
+
+// la fonction "express.json()"" est une fonction middleware intégrée dans Express pour analyser le corps de la requête. (anciennement : body-parser)
 app.use(express.json());
-app.use(morgan("dev"));
+
+app.use(helmet());
+// Sets "Cross-Origin-Resource-Policy: same-site" => Permet d'autoriser à "helmet" le partage de ressources entre deux origines différentes
+app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
+
+// la limite de 100 requêtes toutes les 10 minutes sera effective sur toutes les routes
+app.use(limiter);
 
 // bases des routes auxquelles on ajoute les différentes routes "sauce" et "user" du dossier (routes)
 app.use('/api/sauces', sauceRoutes);

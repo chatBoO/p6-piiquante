@@ -25,4 +25,4 @@ const storage = multer.diskStorage({
 });
 
 // export du middleware multer configuré
-module.exports = multer({storage}).single('image'); // Appel de la méthode multer à laquelle on passe l'objet "storage", ainsi que de la méthode single car c'est un fichier unique qui est une image
+module.exports = multer({storage}).single('image'); // appel de la méthode "multer" à laquelle on passe l'objet "storage", ainsi que de la méthode "single" car c'est un fichier unique qui est une image

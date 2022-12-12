@@ -1,10 +1,10 @@
-// import du module "Mongoose" pour l'accès à la base de données
+// import du module "mongoose" pour l'accès à la base de données
 const mongoose = require('mongoose');
 
-//import du plugin mongoose error pour le gestion des erreur 
+// import du plugin "mongoose error" pour la gestion des erreurs
 const MongooseErrors = require('mongoose-errors');
 
-// Déclaration de notre schema pour "sauce"
+// déclaration de notre schéma pour "sauce"
 const sauceSchema = mongoose.Schema({
 
   userId: { type: String, required: true },
@@ -14,14 +14,14 @@ const sauceSchema = mongoose.Schema({
   mainPepper: { type: String, required: true },
   imageUrl: { type: String, required: true },
   heat: { type: Number, required: true },
-  likes: { type: Number, default: 0}, // Par défaut à 0 qui ne contient pas de note
+  likes: { type: Number, default: 0}, // par défaut à 0 qui ne contient pas de note
   dislikes: { type: Number, default: 0},
-  usersLiked: { type: Array, default: []}, // Par défaut un tableau vide qui ne contient pas de d'utilisateurs
+  usersLiked: { type: Array, default: []}, // par défaut un tableau vide qui ne contient pas d'utilisateur
   usersDisliked: { type: Array, default: []},
   
 });
 
-// Appel du plugin mongoose pour les erreurs
+// appel du plugin "mongoose" pour les erreurs
 sauceSchema.plugin(MongooseErrors);
 
 module.exports = mongoose.model("Sauce", sauceSchema);
