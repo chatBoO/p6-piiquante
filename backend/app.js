@@ -3,9 +3,16 @@ const express = require ('express');
 
 // import du module "mongoose" pour la base de données
 const mongoose = require('mongoose');
+mongoose.set('strictQuery', false)
 
 // import module "path" pour la gestion de chemins de stockage
-const path  = require('path');
+const path = require('path');
+
+// import du module "cors" afin d'accepter les requêtes provenant de sources différentes 
+const cors = require('cors');
+
+// import du module "morgan" pour que les informations sur les requêtes soient envoyées dans le terminal
+const morgan = require('morgan');
 
 // import du module "dotenv" pour utiliser les variables d'environnement (ici cacher l'ID et le MDP de la base de données)
 const dotenv = require('dotenv');
@@ -42,15 +49,9 @@ mongoose.connect(MONGODB_URI,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-const app = express(); 
+const app = express();
 
-// ajout du middleware global pour contourner les protections "CORS" lorsque les serveurs sont différents (ici Localhost:4200 et Localhost:3000)
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  next();
-});
+app.use(cors());
 
 // la fonction "express.json()"" est une fonction middleware intégrée dans Express pour analyser le corps de la requête. (anciennement : body-parser)
 app.use(express.json());
@@ -58,6 +59,8 @@ app.use(express.json());
 app.use(helmet());
 // Sets "Cross-Origin-Resource-Policy: same-site" => Permet d'autoriser à "helmet" le partage de ressources entre deux origines différentes
 app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
+
+app.use(morgan('combined'));
 
 // la limite de 100 requêtes toutes les 10 minutes sera effective sur toutes les routes
 app.use(limiter);

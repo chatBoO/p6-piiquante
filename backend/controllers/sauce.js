@@ -59,12 +59,11 @@ exports.deleteOneSauce = (req, res, next) => {
 
 // export du controller qui modifie une sauce
 exports.modifySauce = (req, res, next) => {
-
   const sauceObject = req.file ? { // est-ce que la requête contient un champs "File" ? si oui
     ...JSON.parse(req.body.sauce), // on récupère l'objet en parsant la chaine de caractères JSON
     imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`// on créer l'URL de l'image : {http}://{localhost:3000}/images/{nom de limage par multer}
   } 
-  : {...req.body };   // sinon on récupère l'objet directement
+  : {...req.body }; // sinon on récupère l'objet directement
 
   delete sauceObject._userId; // supression de l'userId pour éviter les requêtes malveillantes
 

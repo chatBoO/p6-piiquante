@@ -21,7 +21,7 @@ const sauceSchema = mongoose.Schema({
   
 });
 
-// appel du plugin "mongoose" pour les erreurs
+// appel du plugin "mongoose-errors" pour les erreurs
 sauceSchema.plugin(MongooseErrors);
 
 module.exports = mongoose.model("Sauce", sauceSchema);
