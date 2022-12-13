@@ -13,3 +13,5 @@ Placez vous dans le dossier "frontend" :
 - Effectuer la commande "npm start" pour lancer la page frontend du projet (localhost:4200)
 
 Afin de pouvoir utiliser toutes les fonctionnalités, veuillez renommer le fichier ".env-template" en ".env" et renseigner vos propres informations
+
+Afin de vous créer un compte un mot de passe "complexe" est requis, voici un mdp fonctionnel : Test123
