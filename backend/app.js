@@ -57,7 +57,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(helmet());
-// Sets "Cross-Origin-Resource-Policy: same-site" => Permet d'autoriser à "helmet" le partage de ressources entre deux origines différentes
+// mettre "Cross-Origin-Resource-Policy: same-site" => Permet d'autoriser à "helmet" le partage de ressources entre deux origines différentes
 app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
 
 app.use(morgan('combined'));
@@ -72,5 +72,6 @@ app.use('/api/auth', userRoutes);
 // ajout d'une route pour pouvoir accéder à l'image de la sauce, grâce au middleware "static" d'express
 app.use("/images", express.static(path.join(__dirname, "images"))); // on récupère le répertoire où s'execute le server + le dossier (image)
 
+// export de app pour être utiliser sur le serveur
 module.exports = app;
 
