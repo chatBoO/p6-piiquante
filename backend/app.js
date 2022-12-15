@@ -35,7 +35,7 @@ const rateLimiter = require('express-rate-limit');
 const limiter = rateLimiter({ // configuration d'express-rate-limit
   max: 100, // un maximum de 100 requêtes
   windowMs:60 * 1000 * 10, // toutes les 10 minutes (60 * 1000ms  = 60 * 1s = 1mn * 10 = 10 mn )
-  message: "Trop de requêtes effectuées depuis cette adresse IP" // affichera ce message une fois que le nombre de requêtes autorisées sera dépassée
+  message: "Trop de requêtes effectuées depuis cette adresse IP" // affichera ce message une fois que le nombre de requêtes autorisées sera dépassé
 });
 
 // importation de nos routes "user" et "sauce"
