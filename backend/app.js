@@ -1,4 +1,4 @@
-// import du package "express" (Framework)
+// import du package "express" (Framework node js)
 const express = require ('express');
 
 // import du module "mongoose" pour la base de données

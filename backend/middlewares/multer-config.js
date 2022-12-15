@@ -1,7 +1,7 @@
 // import du module "multer" pour gérer les fichiers entrants dans les requêtes
 const multer = require('multer');
 
-// objet dictionnaire pour traiter les extensions
+// objet dictionnaire pour traiter les extensions | c'est un standard permettant d'indiquer la nature et le format d'un document (cf mozilla)
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
@@ -9,7 +9,6 @@ const MIME_TYPES = {
   'image/webp': 'webp',
   'image/bmp': 'bmp',
   'image/gif': 'gif',
-  'image/svg': 'svg'
 };
 
 // création de la logique d'enregistrement des fichiers entrants sur le disque (.diskStorage)
@@ -25,4 +24,4 @@ const storage = multer.diskStorage({
 });
 
 // export du middleware multer configuré
-module.exports = multer({storage}).single('image'); // appel de la méthode "multer" à laquelle on passe l'objet "storage", ainsi que de la méthode "single" car c'est un fichier unique qui est une image
+module.exports = multer({storage}).single('image'); // appel "multer" à laquelle on passe l'objet "storage", ainsi que de la méthode "single" car c'est un fichier unique qui est une image

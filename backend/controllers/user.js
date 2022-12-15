@@ -34,7 +34,7 @@ exports.login = (req, res, next) => {
             if (!user) { // Si elle n'existe pas on renvoie une erreur 401 + message
                return res.status(401).json({message: "Combinaison identifiant/mot de passe incorrecte"});
             } else {
-                bcrypt.compare(req.body.password, user.password) // Si elle existe on compare les mots de passe avec la méthode .compare de bcrypt pour comparer avec le hash
+                bcrypt.compare(req.body.password, user.password) // Si elle existe on compare les mots de passe avec la méthode .compare de bcrypt pour comparer avec le hash de la BDD
                     .then(valid => {
                         if (!valid) { // Si mdp incorrect on renvoie une erreur 401 + message
                            return res.status(401).json({message: "Combinaison identifiant/mot de passe incorrecte"});

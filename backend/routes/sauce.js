@@ -16,7 +16,7 @@ const sauceCtrl = require('../controllers/sauce');
 // création d'une sauce
 router.post('/', auth, multer, sauceCtrl.createSauce);
 
-// modifier une sauce
+// modifier une sauce | ":id" est un segment dynamique (req.params.id)
 router.put('/:id',auth, multer, sauceCtrl.modifySauce);
 
 // supression d'une sauce

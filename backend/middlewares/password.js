@@ -1,7 +1,7 @@
 //import du schema de mot de passe
 const passwordSchema = require('../models/Password');
 
-// export du module de vérification de mots de passe
+// export du middleware "password" pour la vérification des mots de passe
 exports.password = (req, res, next) => {
     if (!passwordSchema.validate(req.body.password)) { // si le mot de passe ne passe pas le test de compléxité alors :
         console.log(passwordSchema.validate(req.body.password, { details: true })); // on affiche les details dans la console et on renvoie un message d'erreur dans la réponse
@@ -10,8 +10,7 @@ exports.password = (req, res, next) => {
 
         return;
 
-    } else {
-        
+    } else { 
         next();
     }
 }; 

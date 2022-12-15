@@ -1,7 +1,7 @@
 // import du modèle "Sauce"
 const Sauce = require('../models/Sauce');
 
-// import du module FS (File System) pour créer et gérer des fichiers pour y lire ou stocker
+// import du module FS (File System) pour créer et gérer des fichiers
 const fs  = require ('fs');
 
 // export du controlleur pour créer une sauce
@@ -47,7 +47,7 @@ exports.deleteOneSauce = (req, res, next) => {
       } else {
         const filename = sauce.imageUrl.split('/images/')[1]; // on récupère le nom de l'image après le dossier "images" dans l'URL
 
-        fs.unlink(`images/${filename}`, () => { // la méthode fs.unlink() est utilisée pour supprimer le fichier "filename" dans "images"
+        fs.unlink(`images/${filename}`, () => { // la méthode fs.unlink() est utilisée pour supprimer le fichier "filename" dans "images". Elle prend 2 paramètres (le path : string/url un callback : fonction qui sera appelée lors de l'exécution)
             Sauce.deleteOne({_id: req.params.id}) // puis on supprime la sauce de la BDD
                 .then(() => res.status(200).json({message: "La sauce a bien été supprimée !"}))
                 .catch((error) => res.status(400).json({ error }));
@@ -69,7 +69,7 @@ exports.modifySauce = (req, res, next) => {
 
   Sauce.findOne({_id: req.params.id}) // on récupère les informations de la sauce demandée
   .then((sauce) => {
-    // on vérifie que l'userID de la BDD correspond au userID récupéré du TOKEN
+    // on vérifie que l'userId de la BDD correspond au userId récupéré du TOKEN
     if (sauce.userId != req.auth.userId) { // Si ce n'est pas le cas on renvoie une erreur "requête non autorisée"
       res.status(403).json({message : "Unauthorized request !"});
     
@@ -84,8 +84,8 @@ exports.modifySauce = (req, res, next) => {
         })
       }
 
-      // Si c'est le bon utilisateur, on met à jour la sauce avec avec l'objet "sauceObject" et l'id des paramètres de l'url
-      Sauce.updateOne({ _id: req.params.id}, {...sauceObject, _id: req.params.id})
+      // Si c'est le bon utilisateur, on met à jour la sauce avec avec l'objet "sauceObject" le userId du token et l'id des paramètres de la requête
+      Sauce.updateOne({ _id: req.params.id}, {...sauceObject, userId: req.auth.userId, _id: req.params.id})
         .then(() => res.status(200).json({message: "La sauce a bien été modifiée !"}))
         .catch((error) => res.status(401).json({ error }));
     }
@@ -117,7 +117,7 @@ exports.likeOrDislike = (req, res, next) => {
               if (sauce.usersLiked.includes(userId)) { // la méthode includes() permet de déterminer si un tableau (ici "usersLiked") contient une valeur (ici l'userId de l'utilisateur qui souhaite annuler son vote). Si c'est le cas alors :
               
                 Sauce.updateOne({ _id: sauceId }, {$pull: { usersLiked: userId }, $inc: { likes: -1 }}) // On enlève l'utilisateur du tableau "usersLiked" et on donne "-1" aux likes pour enlever son avis
-                    .then(() =>res.status(200).json({ message: "Sans avis !" }))
+                    .then(() => res.status(200).json({ message: "Sans avis !" }))
                     .catch((error) => res.status(400).json({ error }));
               }
 
